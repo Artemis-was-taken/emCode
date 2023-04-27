@@ -31,6 +31,11 @@
             createIFrame();
           } else {
             clearInterval(intervalId);
+            var shouldCycle = confirm('Page successfully loaded. Do you want to cycle to the next link?');
+            if (shouldCycle) {
+              i++;
+              createIFrame();
+            }
           }
         }, 1000);
       }
