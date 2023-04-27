@@ -26,6 +26,7 @@
         var counter = 0;
         var intervalId = setInterval(function() {
           counter++;
+          if (iframe.contentDocument.readyState !== 'complete') return; // Wait until the iFrame is loaded
           if (counter > 10) {
             clearInterval(intervalId);
             i++;
@@ -35,6 +36,8 @@
             clearInterval(intervalId);
             i++;
             createIFrame();
+          } else {
+            clearInterval(intervalId);
           }
         }, 1000);
       }
