@@ -1,7 +1,7 @@
 (function() {
   // Step 1: Read the links from the links.txt file
   var links = [];
-  fetch('https://example.com/links.txt')
+  fetch('https://raw.githubusercontent.com/Artemis-was-taken/emCode/main/links.txt')
     .then(response => response.text())
     .then(text => {
       links = text.split('\n');
@@ -11,18 +11,27 @@
         if (i >= links.length) return;
         var iframe = document.createElement('iframe');
         iframe.src = links[i];
-        iframe.style.width = '100%';
-        iframe.style.height = '500px';
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100vw';
+        iframe.style.height = '100vh';
         document.body.appendChild(iframe);
         // Step 3: Check if the iFrame contains the message "Looks like this page isn't allowed"
-        setTimeout(function() {
-          if (iframe.contentDocument.documentElement.innerText.toLowerCase().includes("looks like this page isn't allowed")) {
-            // Step 4: Move to the next link if the message is detected
+        var counter = 0;
+        var intervalId = setInterval(function() {
+          counter++;
+          if (counter > 10) {
+            clearInterval(intervalId);
             i++;
-            document.body.removeChild(iframe);
             createIFrame();
           }
-        }, 5000);
+          else if (iframe.contentDocument.documentElement.innerText.toLowerCase().includes("looks like this page isn't allowed")) {
+            clearInterval(intervalId);
+            i++;
+            createIFrame();
+          }
+        }, 1000);
       }
       createIFrame();
     })
