@@ -23,16 +23,9 @@
         document.body.appendChild(iframe);
         currentIFrame = iframe;
         // Step 4: Check if the iFrame contains the message "Looks like this page isn't allowed"
-        var counter = 0;
         var intervalId = setInterval(function() {
-          counter++;
           if (iframe.contentDocument.readyState !== 'complete') return; // Wait until the iFrame is loaded
-          if (counter > 10) {
-            clearInterval(intervalId);
-            i++;
-            createIFrame();
-          }
-          else if (iframe.contentDocument.documentElement.innerText.toLowerCase().includes("looks like this page isn't allowed")) {
+          if (iframe.contentDocument.documentElement.innerText.toLowerCase().includes("looks like this page isn't allowed")) {
             clearInterval(intervalId);
             i++;
             createIFrame();
