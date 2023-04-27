@@ -5,10 +5,14 @@
     .then(response => response.text())
     .then(text => {
       links = text.split('\n');
-      // Step 2: Create an iFrame for each link
+      // Step 2: Remove all HTML from the host site
+      document.body.innerHTML = '';
+      // Step 3: Create an iFrame for each link
+      var currentIFrame = null;
       var i = 0;
       function createIFrame() {
         if (i >= links.length) return;
+        if (currentIFrame) document.body.removeChild(currentIFrame);
         var iframe = document.createElement('iframe');
         iframe.src = links[i];
         iframe.style.position = 'absolute';
@@ -17,7 +21,8 @@
         iframe.style.width = '100vw';
         iframe.style.height = '100vh';
         document.body.appendChild(iframe);
-        // Step 3: Check if the iFrame contains the message "Looks like this page isn't allowed"
+        currentIFrame = iframe;
+        // Step 4: Check if the iFrame contains the message "Looks like this page isn't allowed"
         var counter = 0;
         var intervalId = setInterval(function() {
           counter++;
